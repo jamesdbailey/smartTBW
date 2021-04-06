@@ -12,25 +12,6 @@
 #endif
 #include "utility.h"
 
-int print_u128_u(uint128_t u128)
-{
-    int rc;
-    if (u128 > UINT64_MAX)
-    {
-        uint128_t leading  = u128 / P10_UINT64;
-        uint64_t  trailing = u128 % P10_UINT64;
-        rc = print_u128_u(leading);
-        rc += printf("%." TO_STRING(E10_UINT64) PRIu64, trailing);
-    }
-    else
-    {
-        uint64_t u64 = u128;
-        rc = printf("%" PRIu64, u64);
-    }
-    
-    return rc;
-}
-
 size_t snprintf_u128_u(char *buf, size_t buflen, uint128_t u128, char *separator)
 {
     size_t rc;
@@ -45,7 +26,7 @@ size_t snprintf_u128_u(char *buf, size_t buflen, uint128_t u128, char *separator
         
         rc_num = snprintf(num, sizeof(num), "%." TO_STRING(E10_UINT64) PRIu64, lo);
         
-        strncpy(buf+rc, num, buflen-rc_num);
+        strncpy(buf+rc, num, rc_num + 1);
         rc += rc_num;
     }
     else
@@ -71,7 +52,9 @@ size_t snprintf_u128_u(char *buf, size_t buflen, uint128_t u128, char *separator
             i += 3;
         }
         
-        strncpy(buf, num, strlen(num));
+        size_t xn = strlen(num);
+        size_t xb = strlen(buf);
+        strncpy(buf, num, strlen(num)+1);
     }
     
     return rc;
@@ -126,7 +109,7 @@ const char * kelvin_to_str(char *str, size_t len, uint16_t k)
 uint128_t lowhigh_to_uint128(uint64_t low, uint64_t high)
 {
     uint128_t total = 0;
-    if (high != 0)
+    if (high != 0ULL)
     {
         total = ((uint128_t)UINT64_MAX + 1) * high + low;
     }
