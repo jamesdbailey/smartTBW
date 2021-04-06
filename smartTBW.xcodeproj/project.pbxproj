@@ -251,7 +251,10 @@
 		6D6B6A5B261BC9C400EF968C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesdbailey.smartTBW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -259,7 +262,10 @@
 		6D6B6A5C261BC9C400EF968C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jamesdbailey.smartTBW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
