@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6D6B6A57261BC9C400EF968C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D6B6A56261BC9C400EF968C /* main.c */; };
+		6D6B6A60261BEFD500EF968C /* utility.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D6B6A5F261BEFD500EF968C /* utility.c */; };
+		6D6B6A67261C12A500EF968C /* nvme.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D6B6A66261C12A500EF968C /* nvme.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		6D6B6A53261BC9C400EF968C /* smartTBW */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smartTBW; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D6B6A56261BC9C400EF968C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		6D6B6A5E261BEFD500EF968C /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		6D6B6A5F261BEFD500EF968C /* utility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = utility.c; sourceTree = "<group>"; };
+		6D6B6A65261C12A500EF968C /* nvme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nvme.h; sourceTree = "<group>"; };
+		6D6B6A66261C12A500EF968C /* nvme.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = nvme.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				6D6B6A56261BC9C400EF968C /* main.c */,
+				6D6B6A5E261BEFD500EF968C /* utility.h */,
+				6D6B6A5F261BEFD500EF968C /* utility.c */,
+				6D6B6A65261C12A500EF968C /* nvme.h */,
+				6D6B6A66261C12A500EF968C /* nvme.c */,
 			);
 			path = smartTBW;
 			sourceTree = "<group>";
@@ -118,6 +128,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D6B6A60261BEFD500EF968C /* utility.c in Sources */,
+				6D6B6A67261C12A500EF968C /* nvme.c in Sources */,
 				6D6B6A57261BC9C400EF968C /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
