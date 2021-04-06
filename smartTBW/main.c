@@ -48,10 +48,19 @@ int main(int argc, const char * argv[]) {
             NVMeSMARTData data;
             nvme_read_data(&data);
             close_nvme_device();
+            char celsius[64];
+            kelvin_to_str(celsius, sizeof(celsius), data.TEMPERATURE);
+            printf("Temperature = %s\n", celsius);
+            printf("Available Spare = %i%%\n", data.AVAILABLE_SPARE);
+            printf("Available Spare Threshold = %i%%\n", data.AVAILABLE_SPARE_THRESHOLD);
+            printf("Percentage Used = %i%%\n", data.PERCENTAGE_USED);
             print_data_128_cap(data.DATA_UNITS_READ, "Data Units Read");
             print_data_128_cap(data.DATA_UNITS_WRITTEN, "Data Units Written");
             print_data_128(data.HOST_READ_COMMANDS, "Host Read Commands");
             print_data_128(data.HOST_WRITE_COMMANDS, "Host Write Commands");
+            print_data_128(data.POWER_CYCLES, "Power Cycles");
+            print_data_128(data.POWER_ON_HOURS, "Power On Hours");
+            print_data_128(data.UNSAFE_SHUTDOWNS, "Unsafe Shutdowns");
         }
     }
 

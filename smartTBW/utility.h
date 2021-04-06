@@ -20,6 +20,7 @@ typedef unsigned __int128 uint128_t;
 #define STRINGIZER(x)   # x
 #define TO_STRING(x)    STRINGIZER(x)
 
+const char * kelvin_to_str(char *str, size_t len, uint16_t k);
 int print_u128_u(uint128_t u128);
 size_t snprintf_u128_u(char *buf, size_t buflen, uint128_t u128, char *separator);
 const char * format_capacity(char * str, size_t strsize, uint128_t val);

@@ -110,7 +110,7 @@ const char * format_capacity(char * str, size_t strsize, uint128_t val)
 }
 
 // Format a Kelvin temperature value in Celsius.
-static const char * kelvin_to_str(char *str, int k)
+const char * kelvin_to_str(char *str, size_t len, uint16_t k)
 {
     if (!k) // unsupported?
     {
@@ -118,7 +118,8 @@ static const char * kelvin_to_str(char *str, int k)
         str[1] = 0;
     }
     else
-        snprintf(str, sizeof(str), "%d Celsius", k - 273);
+        snprintf(str, len, "%d Celsius", k - 273);
+    
     return str;
 }
 
