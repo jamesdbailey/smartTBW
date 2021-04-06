@@ -6,120 +6,54 @@
 //
 
 #include <stdio.h>
+#include <inttypes.h>
 #include <IOKit/IOKitLib.h>
 #include <IOKit/storage/nvme/NVMeSMARTLibExternal.h>
+#include "utility.h"
+#include "nvme.h"
 
-static struct {
-  io_object_t ioob;
-  IOCFPlugInInterface **plugin;
-  IONVMeSMARTInterface **smartIfNVMe;
-} device;
-
-bool is_smart_capable (io_object_t dev) {
-    CFTypeRef smartCapableKey = NULL;
-
-    smartCapableKey = IORegistryEntryCreateCFProperty
-      (dev, CFSTR (kIOPropertyNVMeSMARTCapableKey),
-       kCFAllocatorDefault, 0);
-    if (smartCapableKey)
-    {
-        CFRelease (smartCapableKey);
-        return true;
-    }
-
-    return false;
-}
-
-io_object_t detect_nvme_device() {
-    CFMutableDictionaryRef matcher;
-    const char *devname = "disk0";
-    io_object_t disk;
-    matcher = IOBSDNameMatching (kIOMasterPortDefault, 0, devname);
-    disk = IOServiceGetMatchingService (kIOMasterPortDefault, matcher);
-
-    io_registry_entry_t tmpdisk=disk;
-
-    while (! is_smart_capable (tmpdisk))
-    {
-        IOReturn err;
-        io_object_t prevdisk = tmpdisk;
-
-        // Find this device's parent and try again.
-        err = IORegistryEntryGetParentEntry (tmpdisk, kIOServicePlane, &tmpdisk);
-        if (err != kIOReturnSuccess || ! tmpdisk)
-        {
-          IOObjectRelease (prevdisk);
-          break;
-        }
-    }
-    
-    if (tmpdisk)
-    {
-        return tmpdisk;
-    }
-
-    return 0;
-}
-
-bool open_nvme_device(io_object_t disk)
+void print_data_128_cap(uint64_t *data, char *prefix)
 {
-    SInt32 dummy;
-    CFUUIDRef pluginType = NULL;
-    CFUUIDRef smartInterfaceId = NULL;
-    void ** SMARTptr = NULL;
-
-    device.ioob = MACH_PORT_NULL;
-    device.plugin = NULL;
-    device.smartIfNVMe = NULL;
-    SMARTptr = (void **)&device.smartIfNVMe;
-
-    pluginType = kIONVMeSMARTUserClientTypeID;
-    smartInterfaceId = kIONVMeSMARTInterfaceID;
-    
-    kern_return_t res = IOCreatePlugInInterfaceForService (disk, pluginType, kIOCFPlugInInterfaceID, &device.plugin, &dummy);
-    
-    if (res == kIOReturnSuccess)
-    {
-        CFUUIDBytes bytes = CFUUIDGetUUIDBytes (smartInterfaceId);
-        (*device.plugin)->QueryInterface(device.plugin, bytes, SMARTptr);
-        device.ioob = disk;
-        return true;
-    }
-
-    return false;
+    char cap[64];
+    char num[64];
+    uint64_t low = data[0];
+    uint64_t high = data[1];
+    format128(num, sizeof(num), low, high);
+    uint128_t u128 = lowhigh_to_uint128(low, high);
+    u128 = u128 * 1000 * 512;
+    format_capacity(cap, sizeof(cap), u128);
+    printf("%s = %s [%s]\n", prefix, num, cap);
 }
 
-bool close_nvme_device()
+void print_data_128(uint64_t *data, char *prefix)
 {
-    if (device.ioob)
-    {
-        if (device.smartIfNVMe)
-          (*device.smartIfNVMe)->Release (device.smartIfNVMe);
-        if (device.plugin)
-          IODestroyPlugInInterface (device.plugin);
-        IOObjectRelease (device.ioob);
-        device.ioob = MACH_PORT_NULL;
-    }
-    
-    return true;
+    char num[64];
+    uint64_t low = data[0];
+    uint64_t high = data[1];
+    format128(num, sizeof(num), low, high);
+    printf("%s = %s\n", prefix, num);
 }
 
 int main(int argc, const char * argv[]) {
     io_object_t disk = detect_nvme_device();
     if (disk)
-        printf("found one nvme\n");
+        printf("found one NVMe at disk0\n");
     else
-        printf("didn't find nvme\n");
+        printf("didn't find NVMe\n");
     
     if (disk)
     {
         if (open_nvme_device(disk))
         {
             NVMeSMARTData data;
-            (*device.smartIfNVMe)->SMARTReadData(device.plugin, &data);
+            nvme_read_data(&data);
             close_nvme_device();
+            print_data_128_cap(data.DATA_UNITS_READ, "Data Units Read");
+            print_data_128_cap(data.DATA_UNITS_WRITTEN, "Data Units Written");
+            print_data_128(data.HOST_READ_COMMANDS, "Host Read Commands");
+            print_data_128(data.HOST_WRITE_COMMANDS, "Host Write Commands");
         }
     }
-    
+
     return 0;
 }
