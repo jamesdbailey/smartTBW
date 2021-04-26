@@ -25,6 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6D35D39426364946009ACCB6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D35D39E26364B24009ACCB6 /* smartTBWRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = smartTBWRelease.entitlements; sourceTree = "<group>"; };
 		6D6B6A53261BC9C400EF968C /* smartTBW */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smartTBW; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D6B6A56261BC9C400EF968C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		6D6B6A5E261BEFD500EF968C /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
@@ -47,6 +49,7 @@
 		6D6B6A4A261BC9C400EF968C = {
 			isa = PBXGroup;
 			children = (
+				6D35D39426364946009ACCB6 /* Info.plist */,
 				6D6B6A55261BC9C400EF968C /* smartTBW */,
 				6D6B6A54261BC9C400EF968C /* Products */,
 			);
@@ -63,6 +66,7 @@
 		6D6B6A55261BC9C400EF968C /* smartTBW */ = {
 			isa = PBXGroup;
 			children = (
+				6D35D39E26364B24009ACCB6 /* smartTBWRelease.entitlements */,
 				6D6B6A56261BC9C400EF968C /* main.c */,
 				6D6B6A5E261BEFD500EF968C /* utility.h */,
 				6D6B6A5F261BEFD500EF968C /* utility.c */,
@@ -172,6 +176,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DSTROOT = $SRCROOT/build/pkgroot;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -231,6 +236,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DSTROOT = $SRCROOT/build/pkgroot;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -251,9 +257,11 @@
 		6D6B6A5B261BC9C400EF968C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 75J6C96V4Y;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jamesdbailey.smartTBW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -262,11 +270,15 @@
 		6D6B6A5C261BC9C400EF968C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_ENTITLEMENTS = smartTBW/smartTBWRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 75J6C96V4Y;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jamesdbailey.smartTBW;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

@@ -52,8 +52,6 @@ size_t snprintf_u128_u(char *buf, size_t buflen, uint128_t u128, char *separator
             i += 3;
         }
         
-        size_t xn = strlen(num);
-        size_t xb = strlen(buf);
         strncpy(buf, num, strlen(num)+1);
     }
     
