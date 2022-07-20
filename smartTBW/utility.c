@@ -99,7 +99,11 @@ const char * kelvin_to_str(char *str, size_t len, uint16_t k)
         str[1] = 0;
     }
     else
-        snprintf(str, len, "%d Celsius", k - 273);
+    {
+        float c = (k - 273.15);
+        float f = ((1.8*c)+32);
+        snprintf(str, len, "%.2f °C (%.2f °F)", c, f);
+    }
     
     return str;
 }
